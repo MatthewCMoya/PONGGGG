@@ -1,0 +1,238 @@
+.app {
+  width: 100%;
+  padding-top: 0px;
+  background-image: url('../assets/img/brand/scale.jpg');
+  background-size: 100% auto;
+  background-position: center top;
+  background-color: #f1f2f2;
+  color: white;
+  box-sizing: border-box;
+}
+
+.main-content {
+  width: 100vw;
+  min-height: 100vh;
+}
+
+.wrapper {
+  position: relative;
+  width: 100%;
+  margin: auto;
+  padding: 15px 25px;
+  color: white;
+
+  h1 {
+    color: grey;
+    font-size: 60px;
+    margin: 0 auto;
+  }
+
+  .image-wrapper {
+    justify-content: space-between;
+    display: flex;
+  }
+
+  .name {
+    font-size: 50px;
+    font-weight: bold;
+  }
+
+  .record {
+    font-size: 36px;
+  }
+}
+
+.home-button {
+  margin: 10px;
+  border: 2px solid white;
+  border-radius: 0;
+  background: rgba(0,0,0,.5);
+  color: white;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+
+  @media (min-width: 1000px) {
+    font-size: 24px;
+  }
+
+  &:hover {
+    color: $primary;
+    background: black;
+  }
+}
+
+@keyframes fadein {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.quarantined {
+  background: rgba(0,0,0,.5);
+  min-height: 500px;
+  max-width: 1000px;
+  margin: 0 auto;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+
+  &.fade-in {
+    animation: fadein 1s;
+    background: rgba(0,0,0,.7);
+  }
+
+  &.leaderboard {
+    flex-direction: unset;
+    margin-bottom: 50px;
+
+    .leaderboard-row {
+      cursor: pointer;
+
+      &:hover {
+        background: black;
+      }
+    }
+  }
+
+  h1 {
+    padding: 20px;
+    font-size: 48px;
+    margin-bottom: 0;
+  }
+
+  &.add-player {
+    justify-content: space-around;
+    display: flex;
+    flex-direction: column;
+
+    .header {
+      font-size: 42px;
+    }
+  }
+
+  .form-duder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50%;
+    min-width: 250px;
+    margin: 0 auto;
+    text-align: left;
+
+    label {
+      font-size: 20px;
+    }
+
+    input,
+    .home-button {
+      margin: 0 auto 15px;
+      width: 100%;
+    }
+  }
+
+  .control-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-content: space-between;
+    flex-direction: column;
+    margin: 0 auto;
+    align-content: center;
+    padding: 0 15px;
+    width: 100%;
+
+    .home-button {
+      margin: 10px;
+    }
+
+    &.head2head {
+      flex-direction: row;
+    }
+
+    @media (min-width: 767px) {
+      flex-direction: row;
+      padding: 0 50px;
+    }
+
+    .player-1,
+    .player-2 {
+      width: 40%;
+      background: rgba(0,0,0,.2);
+      align-self: flex-start;
+
+      .title {
+        display: block;
+        padding: 15px;
+      }
+
+      .avatar {
+        border-radius: 50%;
+        width: 150px;
+        height: 150px;
+      }
+
+      .record {
+        margin-bottom: 10px;
+      }
+    }
+
+    .vs {
+      background: rgba(0,0,0,.2);
+      width: 20%;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      display: none;
+
+      @media (min-width: 767px) {
+        display: inherit;
+      }
+
+      p {
+        line-height: 1;
+        text-transform: uppercase;
+        text-align: center;
+        font-size: 48px;
+        font-weight: bold;
+        margin: 0 auto;
+
+        @media (min-width: 767px) {
+          width: 16px !important;
+          word-break: break-all;
+        }
+      }
+    }
+  }
+
+  .selection {
+    width: 80%;
+    border-radius: 0px;
+    height: 40px;
+    font-size: 22px;
+    background: black;
+    color: $primary;
+  }
+}
+
+.button-wrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.preview {
+  margin: 15px auto;
+  width: 200px;
+}
+
+.refresh-cache {
+  background: transparent;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  border: 1px solid white;
+  color: white;
+  font-size: 36px;
+  cursor: pointer;
+}

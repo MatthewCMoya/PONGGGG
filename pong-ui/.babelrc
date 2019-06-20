@@ -1,0 +1,18 @@
+{
+  "presets": ["es2015", "es2016", "react"],
+  "plugins": [
+    "syntax-trailing-function-commas",
+    "transform-es2015-modules-commonjs",
+    "transform-class-properties",
+    "transform-object-rest-spread",
+    "transform-decorators-legacy"
+  ],
+  "env": {
+    "test": {
+      "plugins": ["transform-es2015-modules-commonjs", "transform-class-properties"]
+    },
+    "development": {
+      "plugins": ["transform-es2015-modules-commonjs"]
+    }
+  }
+}

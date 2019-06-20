@@ -1,0 +1,38 @@
+{
+  "name": "pongrank-service",
+  "version": "1.0.6",
+  "description": "Pong api",
+  "author": "Mattoya",
+  "license": "ISC",
+  "main": "server.js",
+  "scripts": {
+    "test": "mocha ./**/*.spec.js --exit",
+    "start": "node server.js",
+    "updateStack:cicd": "aws cloudformation update-stack --stack-name pongrank-cicd --template-body file://./cft.cicd.yml --region us-west-2 --capabilities CAPABILITY_NAMED_IAM",
+    "updateStack:service": "aws cloudformation update-stack --stack-name pongrank-service --template-body file://./cft.service.yml --region us-west-2 --capabilities CAPABILITY_NAMED_IAM",
+    "commit": "git-cz"
+  },
+  "dependencies": {
+    "async-middleware": "^1.2.1",
+    "aws-sdk": "^2.386.0",
+    "bluebird": "^3.5.3",
+    "body-parser": "^1.18.3",
+    "cheerio": "^1.0.0-rc.2",
+    "cors": "^2.8.5",
+    "elasticsearch": "^15.0.0",
+    "elo-rating": "^1.0.1",
+    "express": "^4.16.3",
+    "http-aws-es": "^6.0.0",
+    "node-fetch": "^2.2.1",
+    "redis": "^2.8.0",
+    "winston": "^3.1.0",
+    "winston-aws-cloudwatch": "^3.0.0"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "commitizen": "^3.0.4",
+    "cz-conventional-changelog": "^2.1.0",
+    "mocha": "^5.2.0",
+    "sinon": "^7.1.1"
+  }
+}
