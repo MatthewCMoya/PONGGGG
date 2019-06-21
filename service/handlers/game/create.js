@@ -1,51 +1,44 @@
-const EloRating = require('elo-rating');
-const Database = require('./Database');
-const { MALFORMED_JSON_ERROR, MISSING_PARAMETERS_ERROR } = require('./CustomErrors');
-const { playerKeyPrefix, gameLogPrefix } = require('./globals');
-
-const db = new Database();
+const Game = require('../../models/Game');
+const User = require('../../models/User');
+const { MISSING_PARAMETERS_ERROR } = require('../../lib/CustomErrors');
 
 const postResult = async (req) => {
-  if (Object.keys(req.body).length === 0) { throw new MALFORMED_JSON_ERROR(); }
+  const { p1, p1Score, p2, p2Score } = validateReq(req.body);
+  const time = Math.round(new Date().getTime() / 1000);
+  const didPlayer1Win = Number(player1Score) > Number(player2Score);
+
+  const player1 = User.getByNameOrFail(p1);
+  const player2 = User.getByNameOrFail(p2);
+
+  const {
+    p1Rating,
+    p2Rating,
+  } = Game.calculateResult(player1, player2, didPlayer1Win);
   
-  const { player1, player1Score, player2, player2Score } = req.body;
+  player1.adjustRecord(didPlayer1Win, p1Rating);
+  player1.save();
+
+  player2.adjustRecord(!didPlayer1Win, p2Rating);
+  player2.save();
+
+  const game = new Game(p1, p1Score, p2, p2Score, time);
+  game.save();
   
-  if (!player1 || !player1Score || !player2 || !player2Score) { throw new MISSING_PARAMETERS_ERROR(); }
-  if (player1Score === player2Score) { throw Error('No Ties')}
-  
-  try {
-    const player1Object = await db.get(`${playerKeyPrefix}${player1}`);
-    const player2Object = await db.get(`${playerKeyPrefix}${player2}`);
-    const didPlayer1Win = Number(player1Score) > Number(player2Score);
-    
-    const arg1 = didPlayer1Win ? player1Object.rating : player2Object.rating;
-    const arg2 = didPlayer1Win ? player2Object.rating : player1Object.rating;
-    const { playerRating, opponentRating } = EloRating.calculate(arg1, arg2, true);
-    
-    player1Object.record[didPlayer1Win ? 'wins' : 'losses'] += 1
-    player1Object.rating = didPlayer1Win ? playerRating : opponentRating;
+  return game;
+}
 
-    player2Object.record[didPlayer1Win ? 'losses' : 'wins'] += 1
-    player2Object.rating = didPlayer1Win ? opponentRating : playerRating;
+function validateReq(body) {
+  const { p1, p1Score, p2, p2Score } = body || {};
 
-    await db.save(playerKeyPrefix, player1, player1Object);
-    await db.save(playerKeyPrefix, player2, player2Object);
-
-    const time = Math.round(new Date().getTime() / 1000);
-
-    const gameLog = {
-      winner: didPlayer1Win ? player1 : player2,
-      loser: didPlayer1Win ? player2 : player1,
-      finalScore: `${player1Score}-${player2Score}`,
-      time,
-    }
-
-    await db.save(gameLogPrefix, time, gameLog);
-
-    return { message: 'success' };
-  } catch (e) {
-    return { message: 'something went wrong' };
+  if (!p1 || !p2 || !p1Score || !p2Score) {
+    throw new MISSING_PARAMETERS_ERROR();
   }
+
+  if (p1Score === p2Score) {
+    throw Error('No Ties')
+  }
+
+  return { p1, p1Score, p2, p2Score };
 }
 
 export default postResult;

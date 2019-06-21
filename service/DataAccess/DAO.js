@@ -4,9 +4,9 @@ const S3Client = require('../lib/S3Client');
 const { gameLogPrefix, playerKeyPrefix, expirationDurationInDays } = require('../lib/globals');
 
 export class DAO {
-  constructor(injected={}) {
-    this.s3Client = injected.s3 || new S3Client();
-    this.redisClient = injected.redis || new redis.createClient();
+  constructor() {
+    this.s3Client = new S3Client();
+    this.redisClient = new redis.createClient();
     if (!injected.redis) this.promisifyRedis(this.redisClient);
   }
 
