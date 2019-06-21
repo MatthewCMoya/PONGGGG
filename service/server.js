@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const Actions = require('./lib/Actions');
 const cors = require('cors');
 
 const port = process.env.PORT || 3000; // 4000 for local.
@@ -19,13 +18,14 @@ const asyncHandler = fn => (req, res, next) =>
     .catch(next)
     
 app.get('/ping', asyncHandler(async (req, res, next) => res.status(200).send(`pong`)));
+
+app.get('/player', asyncHandler(async (req, res, next) => res.send(await actions.getPlayers(req))));
 app.get('/player/:player', asyncHandler(async (req, res, next) => res.send(await actions.getPlayer(req))));
-app.get('/players', asyncHandler(async (req, res, next) => res.send(await actions.getPlayers(req))));
+app.post('/player', asyncHandler(async (req, res, next) => res.send(await actions.addPlayer(req))));
 app.get('/leaderboard', asyncHandler(async (req, res, next) => res.send(await actions.getLeaderboard(req))));
-app.get('/game-log', asyncHandler(async (req, res, next) => res.send(await actions.getGameLog(req))));
+app.get('/game', asyncHandler(async (req, res, next) => res.send(await actions.getGameLog(req))));
+app.post('/game', asyncHandler(async (req, res, next) => res.send(await actions.postResult(req))));
 app.put('/refresh', asyncHandler(async (req, res, next) => res.send(await actions.refreshService(req))));
-app.post('/result', asyncHandler(async (req, res, next) => res.send(await actions.postResult(req))));
-app.post('/add-player', asyncHandler(async (req, res, next) => res.send(await actions.addPlayer(req))));
 
 app.use((err, req, res, next) => {
   console.error(err.stack)

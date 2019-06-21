@@ -1,14 +1,9 @@
 const redis = require('redis');
 const { promisify } = require('util');
-const S3Client = require('./S3Client');
-const {
-  gameLogPrefix,
-  playerKeyPrefix,
-  expirationDurationInDays,
-} = require('./globals');
+const S3Client = require('../lib/S3Client');
+const { gameLogPrefix, playerKeyPrefix, expirationDurationInDays } = require('../lib/globals');
 
-
-class Database {
+export class DAO {
   constructor(injected={}) {
     this.s3Client = injected.s3 || new S3Client();
     this.redisClient = injected.redis || new redis.createClient();
@@ -111,5 +106,3 @@ class Database {
     }
   }
 }
-
-module.exports = Database;
