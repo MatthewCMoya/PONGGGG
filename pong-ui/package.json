@@ -15,7 +15,7 @@
     "@coreui/react": "^2.0.1",
     "ajv": "^6.5.2",
     "bootstrap": "^4.1.1",
-    "chart.js": "^2.7.2",
+    "chart.js": "^2.9.4",
     "classnames": "^2.2.6",
     "clipboard-polyfill": "^2.4.7",
     "core-js": "^2.5.7",
